@@ -1,6 +1,10 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
-import {ClientsModule, Transport} from "@nestjs/microservices";
+import { ClientsModule, Transport } from "@nestjs/microservices";
+import { MikroOrmModule } from '@mikro-orm/nestjs';
+import mikroOrmConfig from './mikro-orm.config';
+import { Event } from './event/event.entity';
+import { EventRepository } from './event/event.repository';
 
 @Module({
   imports: [
@@ -12,9 +16,11 @@ import {ClientsModule, Transport} from "@nestjs/microservices";
           servers: ['nats://localhost:4222'],
         }
       },
-    ])
+    ]),
+    MikroOrmModule.forRoot(mikroOrmConfig),
+    MikroOrmModule.forFeature([Event]),
   ],
   controllers: [AppController],
-  providers: [],
+  providers: [EventRepository],
 })
 export class AppModule {}
