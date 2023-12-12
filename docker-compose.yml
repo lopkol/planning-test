@@ -1,0 +1,24 @@
+services:
+  postgres:
+    container_name: postgres
+    image: postgres:12.4
+    volumes:
+      - ./infra/data:/var/lib/postgresql/data
+    ports:
+      - "5442:5432"
+    environment:
+      POSTGRES_USER: dbadmin
+      POSTGRES_PASSWORD: UltimateDevPassword
+      POSTGRES_DB: dbadmin
+      PGTZ: Europe/Paris
+
+  nats_server:
+    image: nats:2.10.7-alpine
+    ports:
+      - "4222:4222"
+      - "8222:8222"
+    volumes:
+      - ./infra/nats-server.conf:/nats-server.conf:ro
+      - ./infra/nats:/nats/storage
+    command: ["-n", "nats_server", "--config", "/nats-server.conf", "-V"]
+    restart: always
