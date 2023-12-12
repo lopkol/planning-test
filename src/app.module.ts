@@ -5,6 +5,7 @@ import { MikroOrmModule } from '@mikro-orm/nestjs';
 import mikroOrmConfig from './mikro-orm.config';
 import { Event } from './event/event.entity';
 import { EventRepository } from './event/event.repository';
+import { EventService } from './event/event.service';
 
 @Module({
   imports: [
@@ -21,6 +22,6 @@ import { EventRepository } from './event/event.repository';
     MikroOrmModule.forFeature([Event]),
   ],
   controllers: [AppController],
-  providers: [EventRepository],
+  providers: [EventRepository, EventService],
 })
 export class AppModule {}
