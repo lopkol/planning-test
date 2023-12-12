@@ -1,13 +1,11 @@
 # planning-test
 
-Open two terminal tabs or split the terminal in tw.
-
-In one terminal:
+To start services (NATS server, DB):
 ```shell
 docker-compose up
 ```
 
-In the other:
+To start the app:
 ```shell
 yarn start:dev
 ```
