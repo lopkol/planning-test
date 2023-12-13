@@ -17,7 +17,7 @@ export class CalendarDay {
   ownerUrn: string;
 
   @PrimaryKey()
-  day: string; // date of format YYYY-mm-dd
+  day: string; // date of format YYYY-MM-DD
 
   [PrimaryKeyType]?: [string, string];
 

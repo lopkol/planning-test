@@ -10,6 +10,10 @@ import { CalendarDay } from './calendar/calendar-day.entity';
 import { CalendarEntry } from './calendar/calendar-entry.entity';
 import { CalendarDayRepository } from './calendar/calendar-day.repository';
 import { CalendarEntryRepository } from './calendar/calendar-entry.repository';
+import { CalendarService } from './calendar/calendar.service';
+import { CqrsModule } from '@nestjs/cqrs';
+import { SaveEventHandler } from './commands/handlers/save-event.handler';
+import { TreatEventHandler } from './commands/handlers/treat-event.handler';
 
 @Module({
   imports: [
@@ -24,8 +28,17 @@ import { CalendarEntryRepository } from './calendar/calendar-entry.repository';
     ]),
     MikroOrmModule.forRoot(mikroOrmConfig),
     MikroOrmModule.forFeature([Event, CalendarDay, CalendarEntry]),
+    CqrsModule,
   ],
   controllers: [AppController],
-  providers: [EventRepository, CalendarDayRepository, CalendarEntryRepository, EventService],
+  providers: [
+    EventRepository,
+    CalendarDayRepository,
+    CalendarEntryRepository,
+    EventService,
+    CalendarService,
+    SaveEventHandler,
+    TreatEventHandler,
+  ],
 })
 export class AppModule {}
