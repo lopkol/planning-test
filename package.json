@@ -38,7 +38,8 @@
     "date-fns": "^2.30.0",
     "nats": "^2.18.0",
     "reflect-metadata": "^0.1.13",
-    "rxjs": "^7.8.1"
+    "rxjs": "^7.8.1",
+    "uuid": "^9.0.1"
   },
   "devDependencies": {
     "@mikro-orm/cli": "^5.9.4",

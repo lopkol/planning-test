@@ -1,4 +1,4 @@
-import { add, Duration, format, parse, startOfDay as dateFnsStartOfDay } from 'date-fns';
+import { add, Duration, format, parse } from 'date-fns';
 import { PeriodUnit } from './period-unit.enum';
 
 /**
