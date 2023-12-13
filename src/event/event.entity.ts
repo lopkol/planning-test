@@ -21,9 +21,12 @@ export class Event {
   @Property()
   subject: string;
 
-  @Property({ type: DateTimeType })
+  @Property({ type: DateTimeType, columnType: 'timestamptz', defaultRaw: 'now()' })
   createdAt: Date;
 
   @Property({ type: JsonType })
   payload: unknown;
+
+  @Property({ type: DateTimeType, columnType: 'timestamptz', nullable: true })
+  treatedAt?: Date;
 }

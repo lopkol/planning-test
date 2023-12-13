@@ -5,6 +5,7 @@ export class EventDto {
   subject: string;
   createdAt?: Date;
   payload: unknown;
+  treatedAt?: Date;
 
   constructor(subject: string, payload: unknown) {
     this.subject = subject;
@@ -15,6 +16,7 @@ export class EventDto {
     const dto = new EventDto(entity.subject, entity.payload);
     dto.id = entity.id;
     dto.createdAt = entity.createdAt;
+    dto.treatedAt = entity.treatedAt;
 
     return dto;
   }
