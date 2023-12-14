@@ -23,4 +23,7 @@ export default defineConfig({
     tableName: 'migration_history',
     snapshot: false,
   },
+  pool: {
+    max: 30,
+  }
 });
