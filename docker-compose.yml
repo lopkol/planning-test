@@ -19,6 +19,19 @@ services:
       - "8222:8222"
     volumes:
       - ./infra/nats-server.conf:/nats-server.conf:ro
+      - ./infra/nats-cluster.conf:/nats-cluster.conf:ro
       - ./infra/nats:/nats/storage
-    command: ["-n", "nats_server", "--config", "/nats-server.conf", "-V"]
+    command: ["-n", "nats_server", "--config", "/nats-cluster.conf", "-V"]
+    # command: ["-n", "nats_server", "--config", "/nats-server.conf", "-V"]
+    restart: always
+
+  nats_server_replica:
+    image: nats:2.10.7-alpine
+    ports:
+      - "4223:4222"
+      - "8223:8222"
+    volumes:
+      - ./infra/nats-cluster.conf:/nats-cluster.conf:ro
+      - ./infra/nats:/nats/storage
+    command: ["-n", "nats_server_replica", "--config", "/nats-cluster.conf", "-V"]
     restart: always
