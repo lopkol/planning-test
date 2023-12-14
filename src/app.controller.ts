@@ -17,13 +17,21 @@ export class AppController {
   @MessagePattern('event.>')
   @CreateRequestContext()
   async saveEvent(@Payload() data: unknown, @Ctx() context: NatsContext) {
-    const savedEvent = await this.commandBus.execute(new SaveEventCommand(context.getSubject(), data));
-    this.client.emit<number>('event-saved', savedEvent);
+    try {
+      const savedEvent = await this.commandBus.execute(new SaveEventCommand(context.getSubject(), data));
+      this.client.emit<number>('event-saved', savedEvent);
+    } catch (e) {
+      console.error(e);
+    }
   }
 
   @MessagePattern('event-saved')
   @CreateRequestContext()
   async treatEvent(@Payload() eventDto: EventDto, @Ctx() context: NatsContext) {
-    await this.commandBus.execute(new TreatEventCommand(eventDto));
+    try {
+      await this.commandBus.execute(new TreatEventCommand(eventDto));
+    } catch (e) {
+      console.error(e);
+    }
   }
 }

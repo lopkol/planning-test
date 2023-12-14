@@ -12,7 +12,7 @@ export default defineConfig({
   port: 5442,
   user: 'dbadmin',
   password: 'UltimateDevPassword',
-  debug: true,
+  debug: false,
   loadStrategy: LoadStrategy.JOINED,
   entities: [
     Event,

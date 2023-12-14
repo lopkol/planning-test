@@ -2,12 +2,17 @@ config:
   target: http://asciiart.artillery.io:8080
   processor: './test/send-nats-message.js'
   phases:
-    - duration: 10
-      arrivalRate: 1
-      rampTo: 5
-      name: Warm up phase
+#    - duration: 10
+#      arrivalRate: 50
+#      rampTo: 100
+#      name: Warm up phase
+#    - duration: 60
+#      arrivalRate: 100
+#      rampTo: 1000
+#      name: Ramp up to peak load
+    - duration: 120
+      arrivalRate: 100
+      name: Sustained peak load
 scenarios:
   - flow:
-      - loop:
-          - function: "run"
-        count: 10
+    - function: "run"

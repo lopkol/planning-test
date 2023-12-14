@@ -8,10 +8,10 @@ export class SaveEventHandler implements ICommandHandler<SaveEventCommand> {
   constructor(private readonly eventService: EventService) {}
 
   async execute(command: SaveEventCommand): Promise<EventDto> {
-    console.log('saving event');
+    // console.log('saving event');
     const eventDto = new EventDto(command.subject, command.payload);
     const savedEvent = await this.eventService.saveEvent(eventDto);
-    console.log('event saved');
+    // console.log('event saved');
 
     return savedEvent;
   }

@@ -20,7 +20,7 @@ export class CalendarService {
 
     const days = getIntersectingDates(entry.start, entry.end);
     for (const day of days) {
-      let calendarDay = await this.entityManager.findOne(CalendarDay, [dto.ownerUrn, day]);
+      let calendarDay = await this.entityManager.findOne(CalendarDay, { ownerUrn: dto.ownerUrn, day });
       if (!calendarDay) {
         calendarDay = new CalendarDay();
         calendarDay.ownerUrn = dto.ownerUrn;
