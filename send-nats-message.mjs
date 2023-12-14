@@ -1,4 +1,5 @@
 import { connect, StringCodec } from "nats";
+import { generateTestReservationEvent } from "./test/generate-test-event.js";
 
 // to create a connection to a nats-server:
 const nc = await connect({ servers: "localhost:4222" });
@@ -15,14 +16,7 @@ const sc = StringCodec();
 //     console.log("subscription closed");
 // })();
 
-nc.publish("event.reservation-created", sc.encode(JSON.stringify({
-    ownerUrn: 'urn::Tenant:uuid:01d04810-abea-4225-914b-57ca2a02c3c2',
-    reservationUrn: 'urn::Reservation:uuid:59fa739b-5450-470b-b7ea-31a29c79b374',
-    activity: 'canoe',
-    start: '2023-12-01T13:00:00.000Z',
-    end: '2023-12-01T14:00:00.000Z',
-    note: 'boo',
-})));
+nc.publish("event.reservation-created", sc.encode(JSON.stringify(generateTestReservationEvent())));
 
 // we want to ensure that messages that are in flight
 // get processed, so we are going to drain the
