@@ -35,3 +35,23 @@ services:
       - ./infra/nats:/nats/storage
     command: ["-n", "nats_server_replica", "--config", "/nats-cluster.conf", "-V"]
     restart: always
+
+  nestjs_worker:
+    image: node:18.19.0-alpine
+    expose:
+      - "3000:3000"
+    working_dir: /app
+    volumes:
+      - ./:/app
+    environment:
+      DB_HOST: postgres
+      DB_PORT: 5432
+      WRITE_NATS_URL: nats://nats_server:4222
+      READ_NATS_URL: nats://nats_server_replica:4222
+    command: ["yarn", "start:dev", "--preserveWatchOutput"]
+    deploy:
+      replicas: 2
+    depends_on:
+      - postgres
+      - nats_server
+    restart: always

@@ -11,7 +11,7 @@ export class SaveEventHandler implements ICommandHandler<SaveEventCommand> {
     // console.log('saving event');
     const eventDto = new EventDto(command.subject, command.payload);
     const savedEvent = await this.eventService.saveEvent(eventDto);
-    // console.log('event saved');
+    console.log('event saved');
 
     return savedEvent;
   }

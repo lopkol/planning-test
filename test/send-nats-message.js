@@ -7,14 +7,16 @@ async function createNats() {
   // to create a connection to a nats-server:
   const nc = await connect({ servers: 'localhost:4222' });
 
+  const js = nc.jetstream();
+
   // create a codec
   const sc = StringCodec();
 
   return {
-    sendRandomNatsMessage() {
+    async sendRandomNatsMessage() {
       const payload = generateTestReservationEvent();
 
-      nc.publish(
+      await js.publish(
         'event.reservation-created',
         sc.encode(JSON.stringify(payload)),
       );
@@ -34,7 +36,7 @@ async function createNats() {
 async function run() {
   // console.log('Sending random message to NATS');
   const conn = await createNats();
-  conn.sendRandomNatsMessage();
+  await conn.sendRandomNatsMessage();
   await conn.close();
 }
 

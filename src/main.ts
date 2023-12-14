@@ -1,14 +1,17 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import {MicroserviceOptions, Transport} from "@nestjs/microservices";
+import { CustomStrategy } from '@nestjs/microservices';
+import { NatsJetStreamServerConfigFactory } from './nats-config/nats-jet-stream-server-config.factory';
 
 async function bootstrap() {
-  const app = await NestFactory.createMicroservice<MicroserviceOptions>(AppModule, {
-    transport: Transport.NATS,
-    options: {
-      servers: ['nats://localhost:4223'],
+  const app = await NestFactory.createApplicationContext(AppModule);
+  const factory = app.get(NatsJetStreamServerConfigFactory);
+  const microservice = await NestFactory.createMicroservice<CustomStrategy>(
+    AppModule,
+    {
+      strategy: factory.create(),
     },
-  });
-  await app.listen();
+  );
+  await microservice.listen();
 }
 bootstrap();
