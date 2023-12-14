@@ -20,14 +20,10 @@ export class CalendarService {
 
     const days = getIntersectingDates(entry.start, entry.end);
     for (const day of days) {
-      let calendarDay = await this.entityManager.findOne(CalendarDay, { ownerUrn: dto.ownerUrn, day });
-      if (!calendarDay) {
-        calendarDay = new CalendarDay();
-        calendarDay.ownerUrn = dto.ownerUrn;
-        calendarDay.day = day;
-      }
+      // we need to upsert because the em identity map cannot handle conflicts
+      await this.entityManager.upsert(CalendarDay, { ownerUrn: dto.ownerUrn, day });
+      let calendarDay = this.entityManager.getReference(CalendarDay, [dto.ownerUrn, day]);
       entry.calendarDays.add(calendarDay);
-      this.entityManager.persist(calendarDay);
     }
 
     this.entityManager.persist(entry);

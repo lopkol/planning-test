@@ -11,12 +11,18 @@ export class TreatEventHandler implements ICommandHandler<TreatEventCommand> {
 
   async execute(command: TreatEventCommand): Promise<void> {
     // console.log('treating event');
-    const dto = command.eventDto.payload as ReservationCreatedEvent;
-    await this.calendarService.createReservation(dto);
+    await this.entityManager.begin();
+    try {
+      const dto = command.eventDto.payload as ReservationCreatedEvent;
+      await this.calendarService.createReservation(dto);
 
-    const event = await this.entityManager.findOne(Event, { id: command.eventDto.id });
-    event.treatedAt = new Date();
-    await this.entityManager.flush();
+      const event = await this.entityManager.findOne(Event, { id: command.eventDto.id });
+      event.treatedAt = new Date();
+      await this.entityManager.commit();
+    } catch (e) {
+      await this.entityManager.rollback();
+      console.error(e);
+    }
     // console.log('event treated with id', event.id);
   }
 }
